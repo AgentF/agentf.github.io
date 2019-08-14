@@ -1,31 +1,45 @@
 {
   "name": "agentf.github.io",
   "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-scripts": "3.1.1"
+  "homepage": "https://agentf.github.io",
+  "bugs": {
+    "url": "https://github.com/AgentF/agentf.github.io/issues",
+    "email": "freddyfx231@gmail.com"
   },
+  "licence": "MIT",
+  "author": {
+    "name": "Freddy Mota",
+    "email": "freddyfx231@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "Freddy Mota",
+      "email": "freddyfx231@gmail.com"
+    }
+  ],
+  "repository": "github:AgentF/agentf.github.io",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "dependencies": {
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-scripts": "3.1.1"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "devDependencies": {},
+  "private": true,
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "development": [
+    "last 1 chrome version",
+    "last 1 firefox version",
+    "last 1 safari version"
+  ]
 }
