@@ -2,6 +2,10 @@ import React from 'react';
 import logo from '../../assets/logo.svg';
 import './App.css';
 
+/*
+  This should be a render-only component
+*/
+
 const View = () => {
   return (
     <div className="App">
