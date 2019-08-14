@@ -19,6 +19,8 @@
   ],
   "repository": "github:AgentF/agentf.github.io",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -29,7 +31,9 @@
     "react-dom": "^16.9.0",
     "react-scripts": "3.1.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "gh-pages": "^2.1.1"
+  },
   "private": true,
   "browserslist": [
     ">0.2%",
