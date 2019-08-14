@@ -19,6 +19,14 @@
   color: white;
 }
 
+.App-header code {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid white;
+  border-radius: 2px;
+  margin: 0 5px;
+  padding: 4px 5px 0px;
+}
+
 .App-link {
   color: #61dafb;
 }
