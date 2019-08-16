@@ -1,7 +1,5 @@
 import React from 'react';
 import Container from './Container';
-import Manager from './Manager';
-import View from './View';
 
 /*
   This index.jsx component has exactly one and only one function
@@ -11,11 +9,5 @@ import View from './View';
   the logic can be managed in other component(s).
 */
 
-const App = () => (
-  <Container>
-    <Manager>
-      <View />
-    </Manager>
-  </Container>
-);
-export default App;
+const UnderConstruction = () => <Container />;
+export default UnderConstruction;
