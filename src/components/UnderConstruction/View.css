@@ -3,10 +3,11 @@
   flex-flow: column nowrap;
   align-items: center;
   overflow: auto;
-  background-position: center;
-  background-repeat: no-repeat;
   background-color: #ddd;
   background-image: url('../../assets/undraw_web_developer_p3e5.svg'); /* https://undraw.co */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .content article {
@@ -14,9 +15,16 @@
   padding: 5px;
   margin: 5px;
   background-color: rgba(255, 255, 255, 0.9);
-  width: 500px;
+  max-width: 500px;
+  box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.5);
 }
 
 .content article p {
-  word-break: break-all;
+  word-break: keep-all;
+}
+
+.content article p a {
+  cursor: pointer;
+  margin: 0 5px;
+  text-decoration: none;
 }
