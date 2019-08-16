@@ -27,6 +27,7 @@ const View = () => {
             here!
           </a>
         </p>
+        git remote add origin git@github.com:AgentF/agentf.github.io.git
       </article>
     </main>
   );

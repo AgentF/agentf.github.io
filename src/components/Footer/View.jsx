@@ -3,6 +3,16 @@ import './View.css';
 
 /*
   This should be a render-only component
+  <button
+    className="social-link"
+    title="Contact with me!"
+    type="button"
+    id="LinkedIn"
+    // eslint-disable-next-line prettier/prettier
+    onClick={() => handleExternalLink('https://www.linkedin.com/in/freddy-mota-6397aa128/')}
+  >
+    LinkedIn
+  </button>
 */
 const handleSendMail = () => {
   const email = 'freddyfx231@gmail.com';
