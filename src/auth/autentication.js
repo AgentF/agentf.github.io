@@ -1,6 +1,8 @@
-/* global firebase */
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+
 class Autentication {
-  crearCuentaEmailPass(email, password, nombres) {
+  static crearCuentaEmailPass(email, password, nombres) {
     this.email = email;
     firebase
       .auth()

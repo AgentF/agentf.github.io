@@ -27,8 +27,11 @@ const handleExternalLink = url => {
 };
 
 const handleLogin = () => {
-  const auth = Autentication();
-  auth.crearCuentaEmailPass('freddyfx231@gmail.com', '24209447', 'AgenteF');
+  Autentication.crearCuentaEmailPass(
+    'freddyfx231@gmail.com',
+    '24209447',
+    'AgenteF',
+  );
 };
 
 const View = () => {
