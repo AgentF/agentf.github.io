@@ -1,5 +1,6 @@
 import React from 'react';
 import './View.css';
+import Autentication from '../../auth/autentication';
 
 /*
   This should be a render-only component
@@ -14,6 +15,7 @@ import './View.css';
     LinkedIn
   </button>
 */
+// eslint-disable-next-line no-unused-vars
 const handleSendMail = () => {
   const email = 'freddyfx231@gmail.com';
   const subject = 'Portfolio Site';
@@ -24,6 +26,11 @@ const handleExternalLink = url => {
   window.open(url, '_blank');
 };
 
+const handleLogin = () => {
+  const auth = Autentication();
+  auth.crearCuentaEmailPass('freddyfx231@gmail.com', '24209447', 'AgenteF');
+};
+
 const View = () => {
   return (
     <footer className="footer">
@@ -32,7 +39,7 @@ const View = () => {
         title="Email me!"
         type="button"
         id="Mail"
-        onClick={handleSendMail}
+        onClick={handleLogin}
       >
         Mail
       </button>
