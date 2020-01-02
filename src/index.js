@@ -2,6 +2,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import UnderConstruction from './components/UnderConstruction';
+import Container from './components/Container';
 
-ReactDOM.render(<UnderConstruction />, document.getElementById('root'));
+ReactDOM.render(<Container />, document.getElementById('root'));

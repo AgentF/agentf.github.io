@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../Header';
-import View from './View';
+import View from '../UnderConstruction';
 import Footer from '../Footer';
 
 const Container = () => {
