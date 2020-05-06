@@ -1,8 +1,27 @@
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
+import firebase from 'firebase';
 
 class Autentication {
-  static crearCuentaEmailPass(email, password, nombres) {
+  constructor() {
+    this.email = '';
+  }
+
+  authEmailPass(email, password) {
+    if (!this.email) this.email = email;
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(result => {
+        if (result.user.emailVerified) {
+          // console.log('Welcome');
+        } else {
+          firebase.auth().signOut();
+          // console.error('Not Verified');
+        }
+      });
+  }
+
+  crearCuentaEmailPass(displayName, email, password) {
+    if (!this.email) this.email = email;
     this.email = email;
     firebase
       .auth()
@@ -10,7 +29,7 @@ class Autentication {
       .then(result => {
         result.user
           .updateProfile({
-            displayName: nombres,
+            displayName,
           })
           .catch(() => {
             // console.error(error);
@@ -24,7 +43,7 @@ class Autentication {
           // console.error(error);
         });
 
-        firebase.auth().singOut();
+        firebase.auth().signOut();
 
         // console.log('You are in!');
       })
