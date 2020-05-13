@@ -7,7 +7,6 @@ import Notifications from '../Notifications/Notifications';
 import Header from '../Header';
 import View from '../UnderConstruction';
 import SignUpLogin from '../Form/SignUpLogin';
-import Footer from '../Footer';
 
 const Container = () => {
   const [
@@ -71,7 +70,6 @@ const Container = () => {
         </Modal>
       )}
       <View />
-      <Footer />
     </>
   );
 };
