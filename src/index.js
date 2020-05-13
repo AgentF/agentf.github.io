@@ -5,8 +5,8 @@ import ReactDOM from 'react-dom';
 import firebase from 'firebase';
 import './index.css';
 import Container from './components/Container';
-import firebaseConfig from './config/ConfigFirebase';
+import configFirebase from './config/ConfigFirebase';
 
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(configFirebase);
 
 ReactDOM.render(<Container />, document.getElementById('root'));

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import View from './View';
 
 /*
@@ -9,5 +10,32 @@ import View from './View';
   the logic can be managed in other component(s).
 */
 
-const Header = () => <View />;
+const Header = ({
+  loggedIn,
+  displayName,
+  photoURL,
+  setShowModal,
+  setNotificationMessage,
+}) => (
+  <View
+    loggedIn={loggedIn}
+    displayName={displayName}
+    photoURL={photoURL}
+    setShowModal={setShowModal}
+    setNotificationMessage={setNotificationMessage}
+  />
+);
+
+Header.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+  displayName: PropTypes.string,
+  photoURL: PropTypes.string,
+  setShowModal: PropTypes.func.isRequired,
+  setNotificationMessage: PropTypes.func.isRequired,
+};
+
+Header.defaultProps = {
+  displayName: '',
+  photoURL: '',
+};
 export default Header;

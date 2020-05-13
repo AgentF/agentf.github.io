@@ -1,28 +1,27 @@
-/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import Input from './Input';
 import Button from './Button';
 import './Form.css';
 import './SignUp.css';
 
-const SignUp = ({ handleClose, auth }) => {
-  const [displayName, setDisplayName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+const SignUp = () => {
+  const [inputName, setInputName] = useState('');
+  const [inputEmail, setInputEmail] = useState('');
+  const [inputPassword, setInputPassword] = useState('');
+  const [inputConfirmPassword, setInputConfirmPassword] = useState('');
+
+  const handleClearForm = e => {
+    e.preventDefault();
+    setInputName('');
+    setInputEmail('');
+    setInputPassword('');
+    setInputConfirmPassword('');
+  };
 
   const handleFormSubmit = e => {
     e.preventDefault();
-    auth.crearCuentaEmailPass(displayName, email, password);
-    handleClose();
+    handleClearForm();
   };
-  // const handleClearForm = e => {
-  //   e.preventDefault();
-  //   setDisplayName('');
-  //   setEmail('');
-  //   setPassword('');
-  //   setConfirmPassword('');
-  // };
 
   return (
     <form className="sing-up" onSubmit={handleFormSubmit}>
@@ -31,9 +30,9 @@ const SignUp = ({ handleClose, auth }) => {
         name="name"
         title="Name"
         type="text"
-        value={displayName}
+        value={inputName}
         handleChange={e => {
-          setDisplayName(e.target.value);
+          setInputName(e.target.value);
         }}
         placeholder="John Doe"
         autoComplete="name"
@@ -42,9 +41,9 @@ const SignUp = ({ handleClose, auth }) => {
         name="email"
         title="Email"
         type="text"
-        value={email}
+        value={inputEmail}
         handleChange={e => {
-          setEmail(e.target.value);
+          setInputEmail(e.target.value);
         }}
         placeholder="john@site.com"
       />
@@ -52,9 +51,9 @@ const SignUp = ({ handleClose, auth }) => {
         name="password"
         title="Password"
         type="password"
-        value={password}
+        value={inputPassword}
         handleChange={e => {
-          setPassword(e.target.value);
+          setInputPassword(e.target.value);
         }}
         placeholder="*****"
         autoComplete="new-password"
@@ -63,9 +62,9 @@ const SignUp = ({ handleClose, auth }) => {
         name="confirmPassword"
         title="Confirm Password"
         type="password"
-        value={confirmPassword}
+        value={inputConfirmPassword}
         handleChange={e => {
-          setConfirmPassword(e.target.value);
+          setInputConfirmPassword(e.target.value);
         }}
         placeholder="*****"
         autoComplete="new-password"

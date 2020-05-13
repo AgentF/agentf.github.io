@@ -1,0 +1,107 @@
+button {
+  cursor: pointer;
+  transition: ease-in-out 300ms;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+button.header-button {
+  --size: 30px;
+  height: var(--size);
+  cursor: pointer;
+  padding: 5px 10px;
+  margin: 5px;
+  background-color: #eee;
+  font-weight: bold;
+  border: none;
+  border-radius: calc(var(--size) / 2);
+}
+
+button.clear-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: #000;
+  border: none;
+  padding: 5px;
+  margin: 0;
+}
+
+button.clear-button:disabled {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
+button.modal-close {
+  display: flex;
+  justify-content: center;
+  right: 5px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #fff;
+  padding: 5px;
+  background: #ef5350;
+  border-radius: 3px;
+  border: 1px solid #b61827;
+}
+
+button.confirm-button {
+  font-size: bold;
+  color: #fff;
+  padding: 2px 5px;
+  background: #66bb6a;
+  border: 1px solid #338a3e;
+  border-radius: 3px;
+}
+
+button.cancel-button {
+  font-size: bold;
+  color: #fff;
+  padding: 2px 5px;
+  background: #ef5350;
+  border: 1px solid #b61827;
+  border-radius: 3px;
+}
+
+button.logout-button {
+  border: none;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button.social-link {
+  --size: 30px;
+  height: var(--size);
+  cursor: pointer;
+  padding: 5px 10px;
+  margin: 5px;
+  background-color: #eee;
+  font-weight: bold;
+  border: none;
+  border-radius: calc(var(--size) / 2);
+}
+
+button.social-link#Mail {
+  color: #fff;
+  background-color: #ffb300;
+}
+
+button.social-link#Twitter {
+  color: #fff;
+  background-color: #1da1f2;
+}
+
+button.social-link#GitHub {
+  color: #fff;
+  background-color: #24292e;
+}
+
+button.social-link#LinkedIn {
+  color: #fff;
+  background-color: #0077b5;
+}

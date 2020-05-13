@@ -1,18 +1,9 @@
 import React from 'react';
+import Button from '../Form/Button';
 import './View.css';
 
 /*
   This should be a render-only component
-  <button
-    className="social-link"
-    title="Contact with me!"
-    type="button"
-    id="LinkedIn"
-    // eslint-disable-next-line prettier/prettier
-    onClick={() => handleExternalLink('https://www.linkedin.com/in/freddy-mota-6397aa128/')}
-  >
-    LinkedIn
-  </button>
 */
 
 // const handleSendMail = () => {
@@ -28,24 +19,34 @@ const handleExternalLink = url => {
 const View = () => {
   return (
     <footer className="footer">
-      <button
+      <Button
         className="social-link"
         title="Follow me!"
-        type="button"
         id="Twitter"
         onClick={() => handleExternalLink('https://twitter.com/Agente_F')}
       >
         Twitter
-      </button>
-      <button
+      </Button>
+      <Button
         className="social-link"
         title="Check my codes!"
-        type="button"
         id="GitHub"
         onClick={() => handleExternalLink('https://github.com/AgentF')}
       >
         GitHub
-      </button>
+      </Button>
+      <Button
+        className="social-link"
+        title="Contact with me!"
+        id="LinkedIn"
+        onClick={() => {
+          handleExternalLink(
+            'https://www.linkedin.com/in/freddy-mota-6397aa128/',
+          );
+        }}
+      >
+        LinkedIn
+      </Button>
     </footer>
   );
 };

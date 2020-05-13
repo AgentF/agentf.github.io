@@ -1,0 +1,11 @@
+img.auto-login-image {
+  max-height: 50px;
+  width: auto;
+}
+
+img.user-image {
+  --size: 60px;
+  max-height: var(--size);
+  width: auto;
+  border-radius: calc(var(--size) / 2);
+}

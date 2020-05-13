@@ -1,23 +1,22 @@
-/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import Input from './Input';
 import Button from './Button';
 import './Form.css';
 
-const Login = ({ handleClose, auth }) => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const handleClearForm = e => {
+    e.preventDefault();
+    setEmail('');
+    setPassword('');
+  };
+
   const handleFormSubmit = e => {
     e.preventDefault();
-    auth.authEmailPass(email, password);
-    handleClose();
+    handleClearForm();
   };
-  // const handleClearForm = e => {
-  //   e.preventDefault();
-  //   setEmail('');
-  //   setPassword('');
-  // };
 
   return (
     <form className="login" onSubmit={handleFormSubmit}>

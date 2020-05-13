@@ -4,23 +4,3 @@
   padding: 0 40px;
   margin-bottom: 2px;
 }
-
-button.confirm-button {
-  font-size: bold;
-  color: #fff;
-  padding: 2px 5px;
-  background: #66bb6a;
-  border: 1px solid #338a3e;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-button.cancel-button {
-  font-size: bold;
-  color: #fff;
-  padding: 2px 5px;
-  background: #ef5350;
-  border: 1px solid #b61827;
-  border-radius: 3px;
-  cursor: pointer;
-}

@@ -1,12 +1,7 @@
 import firebase from 'firebase';
 
 class Autentication {
-  constructor() {
-    this.email = '';
-  }
-
-  authEmailPass(email, password) {
-    if (!this.email) this.email = email;
+  static authEmailPass(email, password, setNotificationMessage) {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
@@ -16,13 +11,65 @@ class Autentication {
         } else {
           firebase.auth().signOut();
           // console.error('Not Verified');
+          setNotificationMessage('Email not verified, please check your email');
         }
       });
   }
 
-  crearCuentaEmailPass(displayName, email, password) {
-    if (!this.email) this.email = email;
-    this.email = email;
+  static authFacebook(setNotificationMessage, handleClose) {
+    const provider = new firebase.auth.FacebookAuthProvider();
+
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(result => {
+        setNotificationMessage(`Welcome ${result.user.displayName}`);
+        handleClose();
+      })
+      .catch(error => {
+        setNotificationMessage(`Error during Facebook auth ${error}`);
+        handleClose();
+      });
+  }
+
+  static authGoogle(setNotificationMessage, handleClose) {
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(result => {
+        setNotificationMessage(`Welcome ${result.user.displayName}`);
+        handleClose();
+      })
+      .catch(error => {
+        setNotificationMessage(`Error during Google auth ${error}`);
+        handleClose();
+      });
+  }
+
+  static authTwitter(setNotificationMessage, handleClose) {
+    const provider = new firebase.auth.TwitterAuthProvider();
+
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(result => {
+        setNotificationMessage(`Welcome ${result.user.displayName}`);
+        handleClose();
+      })
+      .catch(error => {
+        setNotificationMessage(`Error during Twitter auth ${error}`);
+        handleClose();
+      });
+  }
+
+  static crearCuentaEmailPass(
+    displayName,
+    email,
+    password,
+    setNotificationMessage,
+  ) {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -31,25 +78,39 @@ class Autentication {
           .updateProfile({
             displayName,
           })
-          .catch(() => {
+          .catch(error => {
             // console.error(error);
+            setNotificationMessage(`Error creating account ${error}`);
           });
 
         const setup = {
-          url: 'https://localhost:3000/',
+          url: 'https://agentf.github.io/',
         };
 
-        result.user.sendEmailVerification(setup).catch(() => {
+        result.user.sendEmailVerification(setup).catch(error => {
           // console.error(error);
+          setNotificationMessage(`Error sending email verification ${error}`);
         });
 
         firebase.auth().signOut();
 
         // console.log('You are in!');
+        setNotificationMessage('Account Created! Check your email and Login');
       })
-      .catch(() => {
+      .catch(error => {
         // console.error(error);
+        setNotificationMessage(`Error creating account ${error}`);
       });
+  }
+
+  static logOut(setNotificationMessage) {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        // setLoggedIn(false);
+      })
+      .catch(error => setNotificationMessage(`Error login out ${error}`));
   }
 }
 
