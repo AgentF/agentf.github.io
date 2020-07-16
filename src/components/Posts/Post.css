@@ -1,0 +1,17 @@
+li.post {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  height: min-content;
+  padding: 0.5rem;
+}
+
+img.post-img {
+  max-height: 150px;
+  max-width: 100%;
+}
+
+div.post-options {
+  display: flex;
+}
