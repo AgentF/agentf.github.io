@@ -2,16 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../Form/Button';
 import Image from '../Form/Image';
-import firebaseAuth from '../../APIs/firebaseAuth';
 import defaultUserImage from '../../assets/default-user-image.png';
-import './View.css';
+import './Header.css';
 
-const View = ({
+const Header = ({
   loggedIn,
   displayName,
   photoURL,
   setShowSingInModal,
-  setNotificationMessage,
+  handleLogOut,
 }) => {
   return (
     <header className="header">
@@ -20,7 +19,7 @@ const View = ({
         <Button
           className="logout-button"
           title="Logout"
-          handleOnclick={() => firebaseAuth.logOut(setNotificationMessage)}
+          handleOnclick={handleLogOut}
         >
           <Image className="user-image" src={photoURL || defaultUserImage} />
           <span className="display-name">{displayName}</span>
@@ -41,17 +40,17 @@ const View = ({
   );
 };
 
-View.propTypes = {
+Header.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   displayName: PropTypes.string,
   photoURL: PropTypes.string,
   setShowSingInModal: PropTypes.func.isRequired,
-  setNotificationMessage: PropTypes.func.isRequired,
+  handleLogOut: PropTypes.func.isRequired,
 };
 
-View.defaultProps = {
+Header.defaultProps = {
   displayName: '',
   photoURL: '',
 };
 
-export default View;
+export default Header;

@@ -3,14 +3,21 @@ import PropTypes from 'prop-types';
 import Input from './Input';
 import Button from './Button';
 import Image from './Image';
-import firebaseAuth from '../../APIs/firebaseAuth';
 import FacebookImage from '../../assets/Facebook.jpg';
 import GoogleImage from '../../assets/Google.jpg';
 import TwitterImage from '../../assets/Twitter.png';
 import './Form.css';
 import './SignUpLogin.css';
 
-const SignUpLogin = ({ handleClose, setNotificationMessage }) => {
+const SignUpLogin = ({
+  handleClose,
+  handleLogIn,
+  handleSingUp,
+  handleFacebookAuth,
+  handleGoogleAuth,
+  handleTwitterAuth,
+  setNotificationMessage,
+}) => {
   const [option, setOption] = useState('Login');
   const [inputName, setInputName] = useState('');
   const [inputEmail, setInputEmail] = useState('');
@@ -50,18 +57,9 @@ const SignUpLogin = ({ handleClose, setNotificationMessage }) => {
   const handleFormSubmit = e => {
     e.preventDefault();
     if (option === 'Login') {
-      firebaseAuth.authEmailPass(
-        inputEmail,
-        inputPassword,
-        setNotificationMessage,
-      );
+      handleLogIn(inputEmail, inputPassword);
     } else if (option === 'Sign Up' && passwordValidation()) {
-      firebaseAuth.crearCuentaEmailPass(
-        inputName,
-        inputEmail,
-        inputPassword,
-        setNotificationMessage,
-      );
+      handleSingUp(inputName, inputEmail, inputPassword);
     } else if (option === 'Sign Up' && !passwordValidation()) {
       setNotificationMessage('Passwords dont match!');
       setInputPassword('');
@@ -147,12 +145,7 @@ const SignUpLogin = ({ handleClose, setNotificationMessage }) => {
       )}
 
       <div className="direct-credentials">
-        <Button
-          className="clear-button"
-          handleOnclick={() => {
-            firebaseAuth.authFacebook(setNotificationMessage, handleClose);
-          }}
-        >
+        <Button className="clear-button" handleOnclick={handleFacebookAuth}>
           <Image
             className="auto-login-image"
             src={FacebookImage}
@@ -160,12 +153,7 @@ const SignUpLogin = ({ handleClose, setNotificationMessage }) => {
             alt="Continue with Facebook"
           />
         </Button>
-        <Button
-          className="clear-button"
-          handleOnclick={() => {
-            firebaseAuth.authGoogle(setNotificationMessage, handleClose);
-          }}
-        >
+        <Button className="clear-button" handleOnclick={handleGoogleAuth}>
           <Image
             className="auto-login-image"
             src={GoogleImage}
@@ -174,12 +162,7 @@ const SignUpLogin = ({ handleClose, setNotificationMessage }) => {
           />
         </Button>
         {false && (
-          <Button
-            className="clear-button"
-            handleOnclick={() => {
-              firebaseAuth.authTwitter(setNotificationMessage, handleClose);
-            }}
-          >
+          <Button className="clear-button" handleOnclick={handleTwitterAuth}>
             <Image
               className="auto-login-image"
               src={TwitterImage}
@@ -203,6 +186,11 @@ const SignUpLogin = ({ handleClose, setNotificationMessage }) => {
 
 SignUpLogin.propTypes = {
   handleClose: PropTypes.func.isRequired,
+  handleLogIn: PropTypes.func.isRequired,
+  handleSingUp: PropTypes.func.isRequired,
+  handleFacebookAuth: PropTypes.func.isRequired,
+  handleGoogleAuth: PropTypes.func.isRequired,
+  handleTwitterAuth: PropTypes.func.isRequired,
   setNotificationMessage: PropTypes.func.isRequired,
 };
 

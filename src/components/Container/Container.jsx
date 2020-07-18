@@ -1,12 +1,13 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
 import firebase from 'firebase';
+import FirebaseAuth from '../../APIs/FirebaseAuth';
 import CloudFirestoreDB from '../../APIs/CloudFirestoreDB';
 import { guidGenerator } from '../../helpers/functions';
 import useNotifications from '../Notifications/useNotifications';
 import useModal from '../Modal/useModal';
 import Notifications from '../Notifications/Notifications';
 import Modal from '../Modal';
-import Header from '../Header';
+import Header from '../Header/Header';
 import SignUpLogin from '../Form/SignUpLogin';
 import Posts from '../Posts';
 import NewPost from '../Form/NewPost';
@@ -22,19 +23,28 @@ const Container = () => {
   const [showNewPostModal, setShowNewPostModal] = useModal();
   const [loggedIn, setLoggedIn] = useState(false);
   const [displayName, setDisplayName] = useState('');
-  // const [email, setEmail] = useState('');
   const [photoURL, setPhotoURL] = useState('');
   const [posts, setPosts] = useState(null);
   const [userID, setUserID] = useState('');
 
   const isFirstRun = useRef(true);
-  const dbConection = useRef(null);
+  const cloudFirestoreDB = useRef(null);
+  const firebaseAuth = useRef(null);
 
   useLayoutEffect(() => {
     if (isFirstRun.current) {
       isFirstRun.current = false;
-      dbConection.current = new CloudFirestoreDB(firebase.firestore());
-      dbConection.current.getCollection('posts', postsArray => {
+      const facebook = new firebase.auth.FacebookAuthProvider();
+      const google = new firebase.auth.GoogleAuthProvider();
+      const twitter = new firebase.auth.TwitterAuthProvider();
+      firebaseAuth.current = new FirebaseAuth(
+        firebase.auth(),
+        facebook,
+        google,
+        twitter,
+      );
+      cloudFirestoreDB.current = new CloudFirestoreDB(firebase.firestore());
+      cloudFirestoreDB.current.getCollection('posts', postsArray => {
         setPosts(postsArray);
       });
       firebase.auth().onAuthStateChanged(user => {
@@ -63,7 +73,7 @@ const Container = () => {
         loggedIn={loggedIn}
         displayName={displayName}
         photoURL={photoURL}
-        setNotificationMessage={setNotificationMessage}
+        handleLogOut={() => firebaseAuth.current.logOut(setNotificationMessage)}
       />
       {showNotification && (
         <Notifications>
@@ -75,6 +85,33 @@ const Container = () => {
           <SignUpLogin
             setNotificationMessage={setNotificationMessage}
             handleClose={() => setShowSingInModal(false)}
+            handleLogIn={loginInfo => {
+              firebaseAuth.current.authEmailPass(
+                ...loginInfo,
+                setNotificationMessage,
+              );
+            }}
+            handleSingUp={singupInfo => {
+              firebaseAuth.current.crearCuentaEmailPass(
+                ...singupInfo,
+                setNotificationMessage,
+              );
+            }}
+            handleFacebookAuth={() => {
+              firebaseAuth.current.authFacebook(setNotificationMessage, () =>
+                setShowSingInModal(false),
+              );
+            }}
+            handleGoogleAuth={() => {
+              firebaseAuth.current.authGoogle(setNotificationMessage, () =>
+                setShowSingInModal(false),
+              );
+            }}
+            handleTwitterAuth={() => {
+              firebaseAuth.current.authTwitter(setNotificationMessage, () =>
+                setShowSingInModal(false),
+              );
+            }}
           />
         </Modal>
       )}
@@ -84,11 +121,15 @@ const Container = () => {
             setNotificationMessage={setNotificationMessage}
             handleClose={() => setShowNewPostModal(false)}
             handleSend={post => {
-              dbConection.current.addDocToCollection('posts', guidGenerator(), {
-                author_uid: userID,
-                ...post,
-                date: firebase.firestore.FieldValue.serverTimestamp(),
-              });
+              cloudFirestoreDB.current.addDocToCollection(
+                'posts',
+                guidGenerator(),
+                {
+                  author_uid: userID,
+                  ...post,
+                  date: firebase.firestore.FieldValue.serverTimestamp(),
+                },
+              );
             }}
           />
         </Modal>

@@ -1,27 +1,26 @@
-import firebase from 'firebase';
-
-class firebaseAuth {
-  static authEmailPass(email, password, setNotificationMessage) {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(result => {
-        if (result.user.emailVerified) {
-          // console.log('Welcome');
-        } else {
-          firebase.auth().signOut();
-          // console.error('Not Verified');
-          setNotificationMessage('Email not verified, please check your email');
-        }
-      });
+class FirebaseAuth {
+  constructor(auth, facebook, google, twitter) {
+    this.auth = auth;
+    this.facebook = facebook;
+    this.google = google;
+    this.twitter = twitter;
   }
 
-  static authFacebook(setNotificationMessage, handleClose) {
-    const provider = new firebase.auth.FacebookAuthProvider();
+  authEmailPass(email, password, setNotificationMessage) {
+    this.auth.signInWithEmailAndPassword(email, password).then(result => {
+      if (result.user.emailVerified) {
+        // console.log('Welcome');
+      } else {
+        this.auth.signOut();
+        // console.error('Not Verified');
+        setNotificationMessage('Email not verified, please check your email');
+      }
+    });
+  }
 
-    firebase
-      .auth()
-      .signInWithPopup(provider)
+  authFacebook(setNotificationMessage, handleClose) {
+    this.auth
+      .signInWithPopup(this.facebook)
       .then(result => {
         setNotificationMessage(`Welcome ${result.user.displayName}`);
         handleClose();
@@ -32,12 +31,9 @@ class firebaseAuth {
       });
   }
 
-  static authGoogle(setNotificationMessage, handleClose) {
-    const provider = new firebase.auth.GoogleAuthProvider();
-
-    firebase
-      .auth()
-      .signInWithPopup(provider)
+  authGoogle(setNotificationMessage, handleClose) {
+    this.auth
+      .signInWithPopup(this.google)
       .then(result => {
         setNotificationMessage(`Welcome ${result.user.displayName}`);
         handleClose();
@@ -48,12 +44,9 @@ class firebaseAuth {
       });
   }
 
-  static authTwitter(setNotificationMessage, handleClose) {
-    const provider = new firebase.auth.TwitterAuthProvider();
-
-    firebase
-      .auth()
-      .signInWithPopup(provider)
+  authTwitter(setNotificationMessage, handleClose) {
+    this.auth
+      .signInWithPopup(this.twitter)
       .then(result => {
         setNotificationMessage(`Welcome ${result.user.displayName}`);
         handleClose();
@@ -64,14 +57,8 @@ class firebaseAuth {
       });
   }
 
-  static crearCuentaEmailPass(
-    displayName,
-    email,
-    password,
-    setNotificationMessage,
-  ) {
-    firebase
-      .auth()
+  crearCuentaEmailPass(displayName, email, password, setNotificationMessage) {
+    this.auth
       .createUserWithEmailAndPassword(email, password)
       .then(result => {
         result.user
@@ -92,7 +79,7 @@ class firebaseAuth {
           setNotificationMessage(`Error sending email verification ${error}`);
         });
 
-        firebase.auth().signOut();
+        this.auth.signOut();
 
         // console.log('You are in!');
         setNotificationMessage('Account Created! Check your email and Login');
@@ -103,9 +90,8 @@ class firebaseAuth {
       });
   }
 
-  static logOut(setNotificationMessage) {
-    firebase
-      .auth()
+  logOut(setNotificationMessage) {
+    this.auth
       .signOut()
       .then(() => {
         // setLoggedIn(false);
@@ -114,4 +100,4 @@ class firebaseAuth {
   }
 }
 
-export default firebaseAuth;
+export default FirebaseAuth;
