@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 
-class Autentication {
+class firebaseAuth {
   static authEmailPass(email, password, setNotificationMessage) {
     firebase
       .auth()
@@ -114,4 +114,4 @@ class Autentication {
   }
 }
 
-export default Autentication;
+export default firebaseAuth;

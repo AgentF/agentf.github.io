@@ -14,14 +14,14 @@ const Header = ({
   loggedIn,
   displayName,
   photoURL,
-  setShowModal,
+  setShowSingInModal,
   setNotificationMessage,
 }) => (
   <View
     loggedIn={loggedIn}
     displayName={displayName}
     photoURL={photoURL}
-    setShowModal={setShowModal}
+    setShowSingInModal={setShowSingInModal}
     setNotificationMessage={setNotificationMessage}
   />
 );
@@ -30,7 +30,7 @@ Header.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   displayName: PropTypes.string,
   photoURL: PropTypes.string,
-  setShowModal: PropTypes.func.isRequired,
+  setShowSingInModal: PropTypes.func.isRequired,
   setNotificationMessage: PropTypes.func.isRequired,
 };
 

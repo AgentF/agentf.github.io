@@ -1,12 +1,16 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
 import firebase from 'firebase';
-import useModal from '../Modal/useModal';
-import Modal from '../Modal';
+import CloudFirestoreDB from '../../APIs/CloudFirestoreDB';
+import { guidGenerator } from '../../helpers/functions';
 import useNotifications from '../Notifications/useNotifications';
+import useModal from '../Modal/useModal';
 import Notifications from '../Notifications/Notifications';
+import Modal from '../Modal';
 import Header from '../Header';
 import SignUpLogin from '../Form/SignUpLogin';
 import Posts from '../Posts';
+import NewPost from '../Form/NewPost';
+import './Container.css';
 
 const Container = () => {
   const [
@@ -14,32 +18,29 @@ const Container = () => {
     setNotificationMessage,
     showNotification,
   ] = useNotifications(5000);
-  const [showModal, setShowModal] = useModal();
+  const [showSingInModal, setShowSingInModal] = useModal();
+  const [showNewPostModal, setShowNewPostModal] = useModal();
   const [loggedIn, setLoggedIn] = useState(false);
   const [displayName, setDisplayName] = useState('');
   // const [email, setEmail] = useState('');
   const [photoURL, setPhotoURL] = useState('');
   const [posts, setPosts] = useState(null);
+  const [userID, setUserID] = useState('');
 
   const isFirstRun = useRef(true);
+  const dbConection = useRef(null);
 
   useLayoutEffect(() => {
     if (isFirstRun.current) {
       isFirstRun.current = false;
-      const db = firebase.firestore();
-      db.collection('posts').onSnapshot(querySnapshot => {
-        const postsArray = [];
-        querySnapshot.forEach(doc => {
-          const data = doc.data();
-          postsArray.push({ id: doc.id, ...data });
-        });
+      dbConection.current = new CloudFirestoreDB(firebase.firestore());
+      dbConection.current.getCollection('posts', postsArray => {
         setPosts(postsArray);
       });
-
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
           setDisplayName(user.displayName);
-          // setEmail(user.email);
+          setUserID(user.uid);
           setPhotoURL(user.photoURL);
           setLoggedIn(true);
         } else {
@@ -56,9 +57,9 @@ const Container = () => {
   }, [loggedIn]);
 
   return (
-    <>
+    <div className="container">
       <Header
-        setShowModal={setShowModal}
+        setShowSingInModal={setShowSingInModal}
         loggedIn={loggedIn}
         displayName={displayName}
         photoURL={photoURL}
@@ -69,16 +70,40 @@ const Container = () => {
           <span>{notificationMessage}</span>
         </Notifications>
       )}
-      {showModal && (
+      {showSingInModal && (
         <Modal>
           <SignUpLogin
             setNotificationMessage={setNotificationMessage}
-            handleClose={() => setShowModal(false)}
+            handleClose={() => setShowSingInModal(false)}
+          />
+        </Modal>
+      )}
+      {showNewPostModal && (
+        <Modal>
+          <NewPost
+            setNotificationMessage={setNotificationMessage}
+            handleClose={() => setShowNewPostModal(false)}
+            handleSend={post => {
+              dbConection.current.addDocToCollection('posts', guidGenerator(), {
+                author_uid: userID,
+                ...post,
+                date: firebase.firestore.FieldValue.serverTimestamp(),
+              });
+            }}
           />
         </Modal>
       )}
       {posts && <Posts posts={posts} />}
-    </>
+      {loggedIn && (
+        <button
+          className="add-post-button"
+          type="button"
+          onClick={() => setShowNewPostModal(true)}
+        >
+          <span className="material-icons">note_add</span>
+        </button>
+      )}
+    </div>
   );
 };
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Input from './Input';
 import Button from './Button';
 import Image from './Image';
-import Autentication from '../../auth/autentication';
+import firebaseAuth from '../../APIs/firebaseAuth';
 import FacebookImage from '../../assets/Facebook.jpg';
 import GoogleImage from '../../assets/Google.jpg';
 import TwitterImage from '../../assets/Twitter.png';
@@ -50,13 +50,13 @@ const SignUpLogin = ({ handleClose, setNotificationMessage }) => {
   const handleFormSubmit = e => {
     e.preventDefault();
     if (option === 'Login') {
-      Autentication.authEmailPass(
+      firebaseAuth.authEmailPass(
         inputEmail,
         inputPassword,
         setNotificationMessage,
       );
     } else if (option === 'Sign Up' && passwordValidation()) {
-      Autentication.crearCuentaEmailPass(
+      firebaseAuth.crearCuentaEmailPass(
         inputName,
         inputEmail,
         inputPassword,
@@ -150,7 +150,7 @@ const SignUpLogin = ({ handleClose, setNotificationMessage }) => {
         <Button
           className="clear-button"
           handleOnclick={() => {
-            Autentication.authFacebook(setNotificationMessage, handleClose);
+            firebaseAuth.authFacebook(setNotificationMessage, handleClose);
           }}
         >
           <Image
@@ -163,7 +163,7 @@ const SignUpLogin = ({ handleClose, setNotificationMessage }) => {
         <Button
           className="clear-button"
           handleOnclick={() => {
-            Autentication.authGoogle(setNotificationMessage, handleClose);
+            firebaseAuth.authGoogle(setNotificationMessage, handleClose);
           }}
         >
           <Image
@@ -177,7 +177,7 @@ const SignUpLogin = ({ handleClose, setNotificationMessage }) => {
           <Button
             className="clear-button"
             handleOnclick={() => {
-              Autentication.authTwitter(setNotificationMessage, handleClose);
+              firebaseAuth.authTwitter(setNotificationMessage, handleClose);
             }}
           >
             <Image
