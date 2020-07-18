@@ -12,6 +12,21 @@ img.post-img {
   max-width: 100%;
 }
 
+span.post-title {
+  margin: 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  position: relative;
+}
+
+div.edit-options {
+  display: none;
+}
+
+span.post-title:focus + div.edit-options {
+  display: initial;
+}
+
 div.post-options {
   display: flex;
 }

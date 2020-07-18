@@ -9,7 +9,7 @@ import Notifications from '../Notifications/Notifications';
 import Modal from '../Modal';
 import Header from '../Header/Header';
 import SignUpLogin from '../Form/SignUpLogin';
-import Posts from '../Posts';
+import Posts from '../Posts/Posts';
 import NewPost from '../Form/NewPost';
 import './Container.css';
 
@@ -134,7 +134,16 @@ const Container = () => {
           />
         </Modal>
       )}
-      {posts && <Posts posts={posts} />}
+      {posts && (
+        <Posts
+          loggedIn={loggedIn}
+          userID={userID}
+          handleEdit={(id, post) => {
+            cloudFirestoreDB.current.updateByID('posts', id, post);
+          }}
+          posts={posts}
+        />
+      )}
       {loggedIn && (
         <button
           className="add-post-button"

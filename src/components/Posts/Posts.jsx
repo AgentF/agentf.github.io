@@ -3,18 +3,22 @@ import PropTypes from 'prop-types';
 import Post from './Post';
 import './Posts.css';
 
-const Posts = ({ posts }) => (
+const Posts = ({ posts, userID, loggedIn, handleEdit }) => (
   <ul className="posts">
-    {posts.map(({ id, googleDocsId, title, link, desc }) => (
-      <Post
-        key={id}
-        id={id}
-        googleDocsId={googleDocsId}
-        title={title}
-        link={link}
-        desc={desc}
-      />
-    ))}
+    {posts.map(
+      ({ id, googleDocsId, title, links, desc, author_uid: authorID }) => (
+        <Post
+          key={id}
+          id={id}
+          googleDocsId={googleDocsId}
+          title={title}
+          links={links}
+          desc={desc}
+          editable={loggedIn && authorID === userID}
+          handleEdit={updatedPost => handleEdit(id, updatedPost)}
+        />
+      ),
+    )}
   </ul>
 );
 
@@ -28,6 +32,9 @@ Posts.propTypes = {
       desc: PropTypes.string.isRequired,
     }),
   ).isRequired,
+  userID: PropTypes.string.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
+  handleEdit: PropTypes.func.isRequired,
 };
 
 export default Posts;
