@@ -8,9 +8,9 @@ import useModal from '../Modal/useModal';
 import Notifications from '../Notifications/Notifications';
 import Modal from '../Modal';
 import Header from '../Header/Header';
-import SignUpLogin from '../Form/SignUpLogin';
+import SignUpLogin from '../Forms/SignUpLogin/SignUpLogin';
 import Posts from '../Posts/Posts';
-import NewPost from '../Form/NewPost';
+import NewPost from '../Forms/NewPost/NewPost';
 import './Container.css';
 
 const Container = () => {

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Input from './Input';
-import TextArea from './TextArea';
-import Button from './Button';
-import './Form.css';
+import Input from '../basics/Input';
+import TextArea from '../basics/TextArea';
+import Button from '../basics/Button';
+import '../basics/Form.css';
 import './NewPost.css';
 
 const NewPost = ({ handleSend, handleClose, setNotificationMessage }) => {

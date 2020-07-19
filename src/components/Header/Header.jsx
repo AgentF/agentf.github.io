@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '../Form/Button';
-import Image from '../Form/Image';
+import Button from '../Forms/basics/Button';
+import Image from '../Forms/basics/Image';
 import defaultUserImage from '../../assets/default-user-image.png';
 import './Header.css';
 

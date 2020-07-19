@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Input from './Input';
-import Button from './Button';
-import Image from './Image';
-import FacebookImage from '../../assets/Facebook.jpg';
-import GoogleImage from '../../assets/Google.jpg';
-import TwitterImage from '../../assets/Twitter.png';
-import './Form.css';
+import Input from '../basics/Input';
+import Button from '../basics/Button';
+import Image from '../basics/Image';
+import FacebookImage from '../../../assets/Facebook.jpg';
+import GoogleImage from '../../../assets/Google.jpg';
+import TwitterImage from '../../../assets/Twitter.png';
+import '../basics/Form.css';
 import './SignUpLogin.css';
 
 const SignUpLogin = ({
