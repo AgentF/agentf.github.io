@@ -3,10 +3,6 @@ button {
   transition: ease-in-out 300ms;
 }
 
-button:hover {
-  transform: scale(1.1);
-}
-
 button.header-button {
   --size: 30px;
   height: var(--size);

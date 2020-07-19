@@ -1,8 +1,8 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
 import firebase from 'firebase';
 import FirebaseAuth from '../../APIs/FirebaseAuth';
+import FirebaseStorage from '../../APIs/FirebaseStorage';
 import CloudFirestoreDB from '../../APIs/CloudFirestoreDB';
-import { guidGenerator } from '../../helpers/functions';
 import useNotifications from '../Notifications/useNotifications';
 import useModal from '../Modal/useModal';
 import Notifications from '../Notifications/Notifications';
@@ -29,6 +29,7 @@ const Container = () => {
 
   const isFirstRun = useRef(true);
   const cloudFirestoreDB = useRef(null);
+  const firebaseStorage = useRef(null);
   const firebaseAuth = useRef(null);
 
   useLayoutEffect(() => {
@@ -43,6 +44,7 @@ const Container = () => {
         google,
         twitter,
       );
+      firebaseStorage.current = new FirebaseStorage(firebase.storage());
       cloudFirestoreDB.current = new CloudFirestoreDB(firebase.firestore());
       cloudFirestoreDB.current.getCollection('posts', postsArray => {
         setPosts(postsArray);
@@ -54,6 +56,8 @@ const Container = () => {
           setPhotoURL(user.photoURL);
           setLoggedIn(true);
         } else {
+          setUserID(null);
+          setPhotoURL(null);
           setLoggedIn(false);
         }
       });
@@ -63,6 +67,7 @@ const Container = () => {
       setNotificationMessage(`Welcome ${displayName}`);
     } else {
       setNotificationMessage(`Bye ${displayName}`);
+      setDisplayName(null);
     }
   }, [loggedIn]);
 
@@ -121,15 +126,11 @@ const Container = () => {
             setNotificationMessage={setNotificationMessage}
             handleClose={() => setShowNewPostModal(false)}
             handleSend={post => {
-              cloudFirestoreDB.current.addDocToCollection(
-                'posts',
-                guidGenerator(),
-                {
-                  author_uid: userID,
-                  ...post,
-                  date: firebase.firestore.FieldValue.serverTimestamp(),
-                },
-              );
+              cloudFirestoreDB.current.addDocToCollection('posts', {
+                author_uid: userID,
+                ...post,
+                date: firebase.firestore.FieldValue.serverTimestamp(),
+              });
             }}
           />
         </Modal>
@@ -140,6 +141,30 @@ const Container = () => {
           userID={userID}
           handleEdit={(id, post) => {
             cloudFirestoreDB.current.updateByID('posts', id, post);
+          }}
+          handleAddImage={(id, file) => {
+            firebaseStorage.current.uploadImage(
+              'posts',
+              userID,
+              id,
+              file,
+              setNotificationMessage,
+              url => {
+                const postIndex = posts.findIndex(
+                  possiblePost => possiblePost.id === id,
+                );
+                const post = {
+                  ...posts[postIndex],
+                  src: url,
+                };
+                cloudFirestoreDB.current.updateByID('posts', id, post);
+                setPosts([
+                  ...posts.slice(0, postIndex),
+                  post,
+                  ...posts.slice(postIndex + 1),
+                ]);
+              },
+            );
           }}
           posts={posts}
         />

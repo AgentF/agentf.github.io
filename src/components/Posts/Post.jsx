@@ -1,76 +1,125 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import './Post.css';
 
-const Post = ({ title, links, googleDocsId, desc, editable, handleEdit }) => {
+const Post = ({
+  title,
+  links,
+  src,
+  desc,
+  editable,
+  handleEdit,
+  handleAddImage,
+}) => {
   const [newTitle, setNewTitle] = useState(title);
+  const [showTitleEditOptions, setShowTitleEditOptions] = useState(false);
   const [newDesc, setNewDesc] = useState(desc);
+  const [showDescEditOptions, setShowDescEditOptions] = useState(false);
+
+  const titleRef = useRef(null);
+  const descRef = useRef(null);
+  const imgInputRef = useRef(null);
 
   return (
     <li className="post">
-      <img
-        className="post-img"
-        src={`http://drive.google.com/uc?export=view&id=${googleDocsId}`}
-        alt={`${title} thumbnail`}
-      />
+      <button
+        className="img-button"
+        type="button"
+        onClick={() => imgInputRef.current && imgInputRef.current.click()}
+      >
+        <img className="post-img" src={src} alt={`${title} thumbnail`} />
+        {editable && (
+          <input
+            className="img-input"
+            type="file"
+            ref={imgInputRef}
+            accept="image/png, image/jpeg"
+            onChange={({ target: { files } }) => handleAddImage(files[0])}
+          />
+        )}
+      </button>
       <span
         className="post-title"
         contentEditable={editable}
+        ref={titleRef}
+        onClick={() => setShowTitleEditOptions(true)}
+        onKeyDown={e => {
+          if (e.key === 'Escape') {
+            titleRef.current.innerText = newTitle;
+            setShowTitleEditOptions(false);
+          }
+        }}
         role="textbox"
-        tabIndex="0"
+        tabIndex={editable ? '0' : '-1'}
       >
         {newTitle}
       </span>
-      <div className="edit-options">
-        <button
-          className="save-changes-button"
-          type="button"
-          onClick={e => {
-            handleEdit({ title: e.target.innerText });
-            setNewTitle(e.target.innerText);
-          }}
-        >
-          <span className="material-icons">save</span>
-        </button>
-        <button
-          className="save-changes-button"
-          type="button"
-          onClick={() => {
-            // cancel and set original text
-          }}
-        >
-          <span className="material-icons">close</span>
-        </button>
-      </div>
+      {showTitleEditOptions && (
+        <div className="edit-options">
+          <button
+            className="save-changes-button"
+            type="button"
+            onClick={() => {
+              handleEdit({ title: titleRef.current.innerText });
+              setNewTitle(titleRef.current.innerText);
+              setShowTitleEditOptions(false);
+            }}
+          >
+            <span className="material-icons">save</span>
+          </button>
+          <button
+            className="save-changes-button"
+            type="button"
+            onClick={() => {
+              titleRef.current.innerText = newTitle;
+              setShowTitleEditOptions(false);
+            }}
+          >
+            <span className="material-icons">close</span>
+          </button>
+        </div>
+      )}
       <div
         className="post-desc"
         contentEditable={editable}
+        ref={descRef}
+        onClick={() => setShowDescEditOptions(true)}
+        onKeyDown={e => {
+          if (e.key === 'Escape') {
+            descRef.current.innerText = newDesc;
+            setShowDescEditOptions(false);
+          }
+        }}
         role="textbox"
-        tabIndex="0"
+        tabIndex={editable ? '0' : '-1'}
       >
         {newDesc}
       </div>
-      <div className="edit-options">
-        <button
-          className="save-changes-button"
-          type="button"
-          onClick={e => {
-            handleEdit({ desc: e.target.innerText });
-            setNewDesc(e.target.innerText);
-          }}
-        >
-          <span className="material-icons">save</span>
-        </button>
-        <button
-          className="save-changes-button"
-          type="button"
-          onClick={() => {
-            // cancel and set original text
-          }}
-        >
-          <span className="material-icons">close</span>
-        </button>
-      </div>
+      {showDescEditOptions && (
+        <div className="edit-options">
+          <button
+            className="save-changes-button"
+            type="button"
+            onClick={() => {
+              handleEdit({ desc: descRef.current.innerText });
+              setNewDesc(descRef.current.innerText);
+              setShowDescEditOptions(false);
+            }}
+          >
+            <span className="material-icons">save</span>
+          </button>
+          <button
+            className="save-changes-button"
+            type="button"
+            onClick={() => {
+              descRef.current.innerText = newDesc;
+              setShowDescEditOptions(false);
+            }}
+          >
+            <span className="material-icons">close</span>
+          </button>
+        </div>
+      )}
       {links && links.length && (
         <div className="post-options">
           {links.map(({ name, url, icon }) => (
@@ -90,7 +139,7 @@ const Post = ({ title, links, googleDocsId, desc, editable, handleEdit }) => {
 };
 
 Post.propTypes = {
-  googleDocsId: PropTypes.string.isRequired,
+  src: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   links: PropTypes.arrayOf(
     PropTypes.shape({
@@ -101,6 +150,7 @@ Post.propTypes = {
   desc: PropTypes.string.isRequired,
   editable: PropTypes.bool.isRequired,
   handleEdit: PropTypes.func.isRequired,
+  handleAddImage: PropTypes.func.isRequired,
 };
 
 export default Post;
