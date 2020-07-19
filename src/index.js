@@ -6,7 +6,7 @@ import firebase from 'firebase';
 import Container from './components/Container';
 import './index.css';
 
-const firebaseConfig = {
+firebase.initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
   databaseURL: process.env.REACT_APP_FIREBASE_DATABASEURL,
@@ -15,7 +15,6 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGINGSENDERID,
   appId: process.env.REACT_APP_FIREBASE_APPID,
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID,
-};
-firebase.initializeApp(firebaseConfig);
+});
 
 ReactDOM.render(<Container />, document.getElementById('root'));

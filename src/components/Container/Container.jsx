@@ -35,6 +35,8 @@ const Container = () => {
   useLayoutEffect(() => {
     if (isFirstRun.current) {
       isFirstRun.current = false;
+
+      /* Auth */
       const facebook = new firebase.auth.FacebookAuthProvider();
       const google = new firebase.auth.GoogleAuthProvider();
       const twitter = new firebase.auth.TwitterAuthProvider();
@@ -44,11 +46,7 @@ const Container = () => {
         google,
         twitter,
       );
-      firebaseStorage.current = new FirebaseStorage(firebase.storage());
-      cloudFirestoreDB.current = new CloudFirestoreDB(firebase.firestore());
-      cloudFirestoreDB.current.getCollection('posts', postsArray => {
-        setPosts(postsArray);
-      });
+
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
           setDisplayName(user.displayName);
@@ -61,6 +59,64 @@ const Container = () => {
           setLoggedIn(false);
         }
       });
+      /* Auth */
+
+      /* Storage */
+      firebaseStorage.current = new FirebaseStorage(firebase.storage());
+      /* Storage */
+
+      cloudFirestoreDB.current = new CloudFirestoreDB(firebase.firestore());
+      cloudFirestoreDB.current.getCollection('posts', postsArray => {
+        setPosts(postsArray);
+      });
+
+      /* Messaging */
+      // const messaging = firebase.messaging();
+
+      // messaging.usePublicVapidKey(
+      //   process.env.REACT_APP_FIREBASE_CLOUDMESSAGIINGCERTIFICATE,
+      // );
+
+      // messaging
+      //   .requestPermission()
+      //   .then(() => {
+      //     console.log('permiso otorgado');
+      //     return messaging.getToken();
+      //   })
+      //   .then(token => {
+      //     const db = firebase.firestore();
+      //     db.collection('tokens')
+      //       .doc(token)
+      //       .set({
+      //         token,
+      //       })
+      //       .catch(error => {
+      //         console.error(`Error al insertar el token en la BD => ${error}`);
+      //       });
+      //   });
+
+      // messaging.onTokenRefresh(() => {
+      //   messaging.getToken().then(token => {
+      //     console.log('token se ha renovado');
+      //     const db = firebase.firestore();
+      //     db.settings({ timestampsInSnapshots: true });
+      //     db.collection('tokens')
+      //       .doc(token)
+      //       .set({
+      //         token,
+      //       })
+      //       .catch(error => {
+      //         console.error(`Error al insertar el token en la BD => ${error}`);
+      //       });
+      //   });
+      // });
+
+      // messaging.onMessage(payload => {
+      //   console.log('mensaje en foreground');
+      //   setNotificationMessage(`Nuevo Post! ${payload.data.titulo}`);
+      // });
+      /* Messaging */
+
       return;
     }
     if (loggedIn) {
