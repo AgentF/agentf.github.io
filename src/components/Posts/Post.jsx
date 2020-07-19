@@ -25,7 +25,12 @@ const Post = ({
       <button
         className="img-button"
         type="button"
-        onClick={() => imgInputRef.current && imgInputRef.current.click()}
+        disabled={!editable}
+        onClick={() => {
+          if (editable && imgInputRef.current) {
+            imgInputRef.current.click();
+          }
+        }}
       >
         <img className="post-img" src={src} alt={`${title} thumbnail`} />
         {editable && (
