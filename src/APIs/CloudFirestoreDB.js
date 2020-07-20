@@ -3,15 +3,23 @@ class CloudFirestoreDB {
     this.db = db;
   }
 
-  getCollection(collection, setFunction) {
-    this.db.collection(collection).onSnapshot(querySnapshot => {
-      const collectionElementsArray = [];
-      querySnapshot.forEach(doc => {
-        const data = doc.data();
-        collectionElementsArray.push({ id: doc.id, ...data });
-      });
-      setFunction(collectionElementsArray);
-    });
+  getCollection(collection, setData, setLoading, setError) {
+    setLoading(true);
+    return this.db.collection(collection).onSnapshot(
+      querySnapshot => {
+        const collectionElementsArray = [];
+        querySnapshot.forEach(doc => {
+          const data = doc.data();
+          collectionElementsArray.push({ id: doc.id, ...data });
+        });
+        setLoading(false);
+        setData(collectionElementsArray);
+      },
+      error => {
+        setLoading(false);
+        setError(error);
+      },
+    );
   }
 
   addDocToCollection(collection, doc) {

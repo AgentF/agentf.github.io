@@ -2,14 +2,15 @@ import React, { useState, useRef, useLayoutEffect } from 'react';
 import firebase from 'firebase';
 import FirebaseAuth from '../../APIs/FirebaseAuth';
 import FirebaseStorage from '../../APIs/FirebaseStorage';
-import CloudFirestoreDB from '../../APIs/CloudFirestoreDB';
+import { useScrollCheck } from '../../hooks/useScrollCheck';
+import { usePostsData } from '../../hooks/usePostsData';
 import useNotifications from '../Notifications/useNotifications';
 import useModal from '../Modal/useModal';
 import Notifications from '../Notifications/Notifications';
 import Modal from '../Modal';
 import Header from '../Header/Header';
 import SignUpLogin from '../Forms/SignUpLogin/SignUpLogin';
-import Posts from '../Posts/Posts';
+import Posts from '../Posts/index';
 import NewPost from '../Forms/NewPost/NewPost';
 import './Container.css';
 
@@ -19,12 +20,14 @@ const Container = () => {
     setNotificationMessage,
     showNotification,
   ] = useNotifications(5000);
+
+  const scrolledPast = useScrollCheck();
   const [showSingInModal, setShowSingInModal] = useModal();
   const [showNewPostModal, setShowNewPostModal] = useModal();
+  const [posts, loadingPosts, errorPosts, setPosts] = usePostsData();
   const [loggedIn, setLoggedIn] = useState(false);
   const [displayName, setDisplayName] = useState('');
   const [photoURL, setPhotoURL] = useState('');
-  const [posts, setPosts] = useState(null);
   const [userID, setUserID] = useState('');
 
   const isFirstRun = useRef(true);
@@ -64,11 +67,6 @@ const Container = () => {
       /* Storage */
       firebaseStorage.current = new FirebaseStorage(firebase.storage());
       /* Storage */
-
-      cloudFirestoreDB.current = new CloudFirestoreDB(firebase.firestore());
-      cloudFirestoreDB.current.getCollection('posts', postsArray => {
-        setPosts(postsArray);
-      });
 
       /* Messaging */
       // const messaging = firebase.messaging();
@@ -127,6 +125,53 @@ const Container = () => {
     }
   }, [loggedIn]);
 
+  const PostsRender = () => (
+    <>
+      {errorPosts ? (
+        <p>Posts Error!</p>
+      ) : (
+        <>
+          {loadingPosts ? (
+            <p>Loading Posts...</p>
+          ) : (
+            <Posts
+              loggedIn={loggedIn}
+              userID={userID}
+              handleEdit={(id, post) => {
+                cloudFirestoreDB.current.updateByID('posts', id, post);
+              }}
+              handleAddImage={(id, file) => {
+                firebaseStorage.current.uploadImage(
+                  'posts',
+                  userID,
+                  id,
+                  file,
+                  setNotificationMessage,
+                  url => {
+                    const postIndex = posts.findIndex(
+                      possiblePost => possiblePost.id === id,
+                    );
+                    const post = {
+                      ...posts[postIndex],
+                      src: url,
+                    };
+                    cloudFirestoreDB.current.updateByID('posts', id, post);
+                    setPosts([
+                      ...posts.slice(0, postIndex),
+                      post,
+                      ...posts.slice(postIndex + 1),
+                    ]);
+                  },
+                );
+              }}
+              posts={posts}
+            />
+          )}
+        </>
+      )}
+    </>
+  );
+
   return (
     <div className="container">
       <Header
@@ -135,6 +180,7 @@ const Container = () => {
         displayName={displayName}
         photoURL={photoURL}
         handleLogOut={() => firebaseAuth.current.logOut(setNotificationMessage)}
+        scrolledPast={scrolledPast}
       />
       {showNotification && (
         <Notifications>
@@ -191,40 +237,7 @@ const Container = () => {
           />
         </Modal>
       )}
-      {posts && (
-        <Posts
-          loggedIn={loggedIn}
-          userID={userID}
-          handleEdit={(id, post) => {
-            cloudFirestoreDB.current.updateByID('posts', id, post);
-          }}
-          handleAddImage={(id, file) => {
-            firebaseStorage.current.uploadImage(
-              'posts',
-              userID,
-              id,
-              file,
-              setNotificationMessage,
-              url => {
-                const postIndex = posts.findIndex(
-                  possiblePost => possiblePost.id === id,
-                );
-                const post = {
-                  ...posts[postIndex],
-                  src: url,
-                };
-                cloudFirestoreDB.current.updateByID('posts', id, post);
-                setPosts([
-                  ...posts.slice(0, postIndex),
-                  post,
-                  ...posts.slice(postIndex + 1),
-                ]);
-              },
-            );
-          }}
-          posts={posts}
-        />
-      )}
+      {PostsRender()}
       {loggedIn && (
         <button
           className="add-post-button"

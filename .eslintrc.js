@@ -18,5 +18,6 @@ module.exports = {
   plugins: ['react', 'prettier'],
   rules: {
     'prettier/prettier': 'error',
+    'import/prefer-default-export': 'off',
   },
 };

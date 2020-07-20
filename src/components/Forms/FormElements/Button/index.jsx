@@ -1,17 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Button.css';
+import { Button } from './styles';
 
-const Button = ({
-  className,
-  handleOnclick,
-  disabled,
-  title,
-  id,
-  children,
-}) => {
+const App = ({ className, handleOnclick, disabled, title, id, children }) => {
   return (
-    <button
+    <Button
       className={className}
       disabled={disabled}
       title={title}
@@ -20,11 +13,11 @@ const Button = ({
       onClick={handleOnclick}
     >
       {children}
-    </button>
+    </Button>
   );
 };
 
-Button.propTypes = {
+App.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string,
   id: PropTypes.string,
@@ -34,10 +27,10 @@ Button.propTypes = {
   handleOnclick: PropTypes.func.isRequired,
 };
 
-Button.defaultProps = {
+App.defaultProps = {
   className: '',
   title: '',
   id: '',
 };
 
-export default Button;
+export default App;

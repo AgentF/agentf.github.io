@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Post from './Post';
-import './Posts.css';
+import Post from './Post/index';
+import { PostsList } from './styles';
 
 const Posts = ({ posts, userID, loggedIn, handleEdit, handleAddImage }) => (
-  <ul className="posts">
+  <PostsList className="posts">
     {posts.map(({ id, src, title, links, desc, author_uid: authorID }) => (
       <Post
         key={id}
@@ -18,7 +18,7 @@ const Posts = ({ posts, userID, loggedIn, handleEdit, handleAddImage }) => (
         handleAddImage={file => handleAddImage(id, file)}
       />
     ))}
-  </ul>
+  </PostsList>
 );
 
 Posts.propTypes = {

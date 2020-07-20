@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Input from '../basics/Input';
-import Button from '../basics/Button';
-import Image from '../basics/Image';
+import Input from '../FormElements/Input';
+import Button from '../FormElements/Button/index';
+import Img from '../FormElements/Img/index';
 import FacebookImage from '../../../assets/Facebook.jpg';
 import GoogleImage from '../../../assets/Google.jpg';
 import TwitterImage from '../../../assets/Twitter.png';
-import '../basics/Form.css';
+import '../FormElements/Form.css';
 import './SignUpLogin.css';
 
 const SignUpLogin = ({
@@ -146,7 +146,7 @@ const SignUpLogin = ({
 
       <div className="direct-credentials">
         <Button className="clear-button" handleOnclick={handleFacebookAuth}>
-          <Image
+          <Img
             className="auto-login-image"
             src={FacebookImage}
             title="Continue with Facebook"
@@ -154,7 +154,7 @@ const SignUpLogin = ({
           />
         </Button>
         <Button className="clear-button" handleOnclick={handleGoogleAuth}>
-          <Image
+          <Img
             className="auto-login-image"
             src={GoogleImage}
             title="Continue with Google"
@@ -163,7 +163,7 @@ const SignUpLogin = ({
         </Button>
         {false && (
           <Button className="clear-button" handleOnclick={handleTwitterAuth}>
-            <Image
+            <Img
               className="auto-login-image"
               src={TwitterImage}
               title="Continue with Twitter"

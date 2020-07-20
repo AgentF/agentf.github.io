@@ -3,8 +3,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import firebase from 'firebase';
+import { GlobalStyle } from './styles/GlobalStyle';
 import Container from './components/Container';
-import './index.css';
 
 firebase.initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
@@ -17,4 +17,10 @@ firebase.initializeApp({
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID,
 });
 
-ReactDOM.render(<Container />, document.getElementById('root'));
+ReactDOM.render(
+  <>
+    <GlobalStyle />
+    <Container />
+  </>,
+  document.getElementById('root'),
+);

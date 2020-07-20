@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '../Forms/basics/Button';
-import Image from '../Forms/basics/Image';
+import Button from '../Forms/FormElements/Button/index';
+import Img from '../Forms/FormElements/Img/index';
 import defaultUserImage from '../../assets/default-user-image.png';
 import './Header.css';
 
@@ -21,7 +21,7 @@ const Header = ({
           title="Logout"
           handleOnclick={handleLogOut}
         >
-          <Image className="user-image" src={photoURL || defaultUserImage} />
+          <Img className="user-image" src={photoURL || defaultUserImage} />
           <span className="display-name">{displayName}</span>
         </Button>
       ) : (

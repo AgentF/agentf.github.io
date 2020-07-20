@@ -1,6 +1,23 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import './Post.css';
+import { AiOutlineLink } from 'react-icons/ai';
+import { GoMarkGithub } from 'react-icons/go';
+import { DiTrello } from 'react-icons/di';
+import { FaSave } from 'react-icons/fa';
+import { GiCancel } from 'react-icons/gi';
+import { useIntersectionObserver } from '../../../hooks/useIntersectionObserver';
+import {
+  PostWrapper,
+  ImgWrapper,
+  Img,
+  HiddenFileInput,
+  Title,
+  Desc,
+  EditOptions,
+  EditOption,
+  LinkOptions,
+  LinkOption,
+} from './styles';
 
 const Post = ({
   title,
@@ -16,35 +33,36 @@ const Post = ({
   const [newDesc, setNewDesc] = useState(desc);
   const [showDescEditOptions, setShowDescEditOptions] = useState(false);
 
+  const imgWrapperElement = useRef(null);
+  const [showImg] = useIntersectionObserver(imgWrapperElement);
+
   const titleRef = useRef(null);
   const descRef = useRef(null);
   const imgInputRef = useRef(null);
 
   return (
-    <li className="post">
-      <button
-        className="img-button"
+    <PostWrapper>
+      <ImgWrapper
         type="button"
         disabled={!editable}
+        ref={imgWrapperElement}
         onClick={() => {
           if (editable && imgInputRef.current) {
             imgInputRef.current.click();
           }
         }}
       >
-        <img className="post-img" src={src} alt={`${title} thumbnail`} />
+        {showImg && <Img src={src} alt={`${title} thumbnail`} />}
         {editable && (
-          <input
-            className="img-input"
+          <HiddenFileInput
             type="file"
             ref={imgInputRef}
             accept="image/png, image/jpeg"
             onChange={({ target: { files } }) => handleAddImage(files[0])}
           />
         )}
-      </button>
-      <span
-        className="post-title"
+      </ImgWrapper>
+      <Title
         contentEditable={editable}
         ref={titleRef}
         onClick={() => setShowTitleEditOptions(true)}
@@ -58,11 +76,10 @@ const Post = ({
         tabIndex={editable ? '0' : '-1'}
       >
         {newTitle}
-      </span>
+      </Title>
       {showTitleEditOptions && (
-        <div className="edit-options">
-          <button
-            className="save-changes-button"
+        <EditOptions>
+          <EditOption
             type="button"
             onClick={() => {
               handleEdit({ title: titleRef.current.innerText });
@@ -70,22 +87,20 @@ const Post = ({
               setShowTitleEditOptions(false);
             }}
           >
-            <span className="material-icons">save</span>
-          </button>
-          <button
-            className="save-changes-button"
+            <FaSave />
+          </EditOption>
+          <EditOption
             type="button"
             onClick={() => {
               titleRef.current.innerText = newTitle;
               setShowTitleEditOptions(false);
             }}
           >
-            <span className="material-icons">close</span>
-          </button>
-        </div>
+            <GiCancel />
+          </EditOption>
+        </EditOptions>
       )}
-      <div
-        className="post-desc"
+      <Desc
         contentEditable={editable}
         ref={descRef}
         onClick={() => setShowDescEditOptions(true)}
@@ -99,11 +114,10 @@ const Post = ({
         tabIndex={editable ? '0' : '-1'}
       >
         {newDesc}
-      </div>
+      </Desc>
       {showDescEditOptions && (
-        <div className="edit-options">
-          <button
-            className="save-changes-button"
+        <EditOptions>
+          <EditOption
             type="button"
             onClick={() => {
               handleEdit({ desc: descRef.current.innerText });
@@ -111,35 +125,35 @@ const Post = ({
               setShowDescEditOptions(false);
             }}
           >
-            <span className="material-icons">save</span>
-          </button>
-          <button
-            className="save-changes-button"
+            <FaSave />
+          </EditOption>
+          <EditOption
             type="button"
             onClick={() => {
               descRef.current.innerText = newDesc;
               setShowDescEditOptions(false);
             }}
           >
-            <span className="material-icons">close</span>
-          </button>
-        </div>
+            <GiCancel />
+          </EditOption>
+        </EditOptions>
       )}
       {links && links.length && (
-        <div className="post-options">
-          {links.map(({ name, url, icon }) => (
-            <button
-              className="post-option"
+        <LinkOptions>
+          {links.map(({ name, url }) => (
+            <LinkOption
               title={name}
               type="button"
               onClick={() => window.open(url, '_blank')}
             >
-              <span className="material-icons">{icon}</span>
-            </button>
+              {name.toLowerCase().includes('site') && <AiOutlineLink />}
+              {name.toLowerCase().includes('repository') && <GoMarkGithub />}
+              {name.toLowerCase().includes('board') && <DiTrello />}
+            </LinkOption>
           ))}
-        </div>
+        </LinkOptions>
       )}
-    </li>
+    </PostWrapper>
   );
 };
 
