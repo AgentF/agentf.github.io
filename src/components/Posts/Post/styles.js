@@ -6,6 +6,7 @@ export const PostWrapper = styled.li`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   border-radius: 2px;
   background-color: rgba(0, 0, 0, 0.2);
   min-height: 200px;

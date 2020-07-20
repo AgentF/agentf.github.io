@@ -4,7 +4,6 @@ div.modal-wrapper {
   width: var(--size);
   overflow: auto;
   position: absolute;
-  padding: 10px 5px;
   background: #fff;
   border-radius: 3px;
   top: 150px;

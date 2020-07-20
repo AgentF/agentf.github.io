@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Input = ({
+const App = ({
   name,
   title,
   type,
@@ -29,7 +29,7 @@ const Input = ({
   );
 };
 
-Input.propTypes = {
+App.propTypes = {
   name: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
@@ -39,7 +39,7 @@ Input.propTypes = {
   autocomplete: PropTypes.string,
 };
 
-Input.defaultProps = {
+App.defaultProps = {
   autocomplete: 'username',
 };
-export default Input;
+export default App;

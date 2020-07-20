@@ -5,7 +5,7 @@ import { GoMarkGithub } from 'react-icons/go';
 import { DiTrello } from 'react-icons/di';
 import { FaSave } from 'react-icons/fa';
 import { GiCancel } from 'react-icons/gi';
-import { useIntersectionObserver } from '../../../hooks/useIntersectionObserver';
+import { useNearScreen } from '../../../hooks/useNearScreen';
 import {
   PostWrapper,
   ImgWrapper,
@@ -34,7 +34,7 @@ const Post = ({
   const [showDescEditOptions, setShowDescEditOptions] = useState(false);
 
   const imgWrapperElement = useRef(null);
-  const [showImg] = useIntersectionObserver(imgWrapperElement);
+  const [isImgWrapperElementNearScreen] = useNearScreen(imgWrapperElement);
 
   const titleRef = useRef(null);
   const descRef = useRef(null);
@@ -52,7 +52,9 @@ const Post = ({
           }
         }}
       >
-        {showImg && <Img src={src} alt={`${title} thumbnail`} />}
+        {isImgWrapperElementNearScreen && (
+          <Img src={src} alt={`${title} thumbnail`} />
+        )}
         {editable && (
           <HiddenFileInput
             type="file"
