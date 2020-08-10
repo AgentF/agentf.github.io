@@ -1,22 +1,26 @@
-import React from 'react';
-import useNotifications from '../Notifications/useNotifications';
-import Notifications from '../Notifications/Notifications';
-import Header from '../Header';
-import { AgentF } from './styles';
+import React, { useContext } from 'react';
+import { Wrapper, ProjectsList } from './styles';
+import { Project } from '../Project';
+import ProjectsContext from '../../Contexts/ProjectsContext';
 
-const Container = () => {
-  const [notificationMessage, showNotification] = useNotifications(5000);
-
+export const Container = () => {
+  const {
+    projects: { data },
+  } = useContext(ProjectsContext);
   return (
-    <AgentF>
-      <Header />
-      {showNotification && (
-        <Notifications>
-          <span>{notificationMessage}</span>
-        </Notifications>
-      )}
-    </AgentF>
+    <Wrapper>
+      <ProjectsList>
+        {data.map(({ desc, id, imgUrl, links, title }) => (
+          <Project
+            key={id}
+            desc={desc}
+            id={id}
+            imgUrl={imgUrl}
+            links={links}
+            title={title}
+          />
+        ))}
+      </ProjectsList>
+    </Wrapper>
   );
 };
-
-export default Container;

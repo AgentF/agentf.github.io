@@ -1,28 +1,19 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext } from 'react';
 import PropTypes from 'prop-types';
-import { ProjectsReducer } from './ProjectsReducer';
+import { usePostsData } from '../hooks/usePostsData';
 
 const ProjectsContext = createContext();
 
 export const ProjectsProvider = ({ children }) => {
-  const [{ data: projects }, projectsDispatcher] = useReducer(ProjectsReducer, {
-    type: 'RESET_DATA',
-    data: [],
-  });
+  const [projects, loading, error, reloaded, setReloaded] = usePostsData();
 
-  const addElement = data => projectsDispatcher({ type: 'ADD_ELEMENT', data });
-  const removeElement = data =>
-    projectsDispatcher({ type: 'REMOVE_ELEMENT', data });
-  const updateElement = data =>
-    projectsDispatcher({ type: 'UPDATE_ELEMENT', data });
+  const reload = () => setReloaded(reloaded + 1);
 
   return (
     <ProjectsContext.Provider
       value={{
-        projects,
-        addElement,
-        removeElement,
-        updateElement,
+        projects: { data: projects, loading, error },
+        reload,
       }}
     >
       {children}
@@ -31,7 +22,7 @@ export const ProjectsProvider = ({ children }) => {
 };
 
 ProjectsProvider.propTypes = {
-  children: PropTypes.elementType.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 export default ProjectsContext;
