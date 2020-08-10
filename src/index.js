@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import firebase from 'firebase';
 import { GlobalStyle } from './styles/GlobalStyle';
+import { ProjectsProvider } from './Contexts/ProjectsContext';
 import Container from './components/Container';
 
 firebase.initializeApp({
@@ -18,9 +19,9 @@ firebase.initializeApp({
 });
 
 ReactDOM.render(
-  <>
+  <ProjectsProvider>
     <GlobalStyle />
     <Container />
-  </>,
+  </ProjectsProvider>,
   document.getElementById('root'),
 );
